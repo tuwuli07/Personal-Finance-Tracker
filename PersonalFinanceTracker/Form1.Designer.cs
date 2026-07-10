@@ -213,13 +213,17 @@
             lblCategory.Text = "Category";
 
             // cmbCategory
-            cmbCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            cmbCategory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            cmbCategory.Font = new System.Drawing.Font("Segoe UI", 10F);
-            cmbCategory.Location = new System.Drawing.Point(20, 140);
+            cmbCategory.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbCategory.FlatStyle = FlatStyle.Standard;
+            cmbCategory.Font = new Font("Segoe UI", 10F);
+            cmbCategory.BackColor = Color.White;
+            cmbCategory.ForeColor = Color.FromArgb(30, 30, 40);
+
+            cmbCategory.Location = new Point(20, 140);
             cmbCategory.Name = "cmbCategory";
-            cmbCategory.Size = new System.Drawing.Size(260, 30);
+            cmbCategory.Size = new Size(260, 36);
             cmbCategory.TabIndex = 4;
+            cmbCategory.Margin = new Padding(0, 4, 0, 12);
 
             // lblType
             lblType.AutoSize = true;

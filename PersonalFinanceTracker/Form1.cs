@@ -20,6 +20,15 @@ namespace PersonalFinanceTracker
             DataGridViewAdvancedBorderStyle advBorderStyle,
             DataGridViewPaintParts paintParts)
         {
+            // DataGridView may call Paint with rowIndex == -1 (header or other non-row areas).
+            // Avoid indexing into Rows when rowIndex is invalid.
+            if (rowIndex < 0)
+            {
+                base.Paint(g, clipBounds, cellBounds, rowIndex, state,
+                    value, formattedValue, errorText, cellStyle,
+                    advBorderStyle, paintParts);
+                return;
+            }
             bool selected = (state & DataGridViewElementStates.Selected) != 0;
             using var bgBrush = new SolidBrush(selected
                 ? Color.FromArgb(235, 240, 255) : Color.White);
@@ -81,6 +90,14 @@ namespace PersonalFinanceTracker
             DataGridViewAdvancedBorderStyle advBorderStyle,
             DataGridViewPaintParts paintParts)
         {
+            // Guard against Paint calls for header/invalid rows (rowIndex == -1)
+            if (rowIndex < 0)
+            {
+                base.Paint(g, clipBounds, cellBounds, rowIndex, state,
+                    value, formattedValue, errorText, cellStyle,
+                    advBorderStyle, paintParts);
+                return;
+            }
             bool selected = (state & DataGridViewElementStates.Selected) != 0;
             using var bgBrush = new SolidBrush(selected
                 ? Color.FromArgb(235, 240, 255) : Color.White);
@@ -119,7 +136,7 @@ namespace PersonalFinanceTracker
     // ═══════════════════════════════════════════════════════════════════════════
     public partial class Form1 : Form
     {
-        private List<Transaction> transactions = new List<Transaction>();
+        private BindingList<Transaction> transactions = new BindingList<Transaction>();
         public Form1()
         {
             InitializeComponent();
@@ -275,10 +292,6 @@ namespace PersonalFinanceTracker
                 Notes = txtNotes.Text.Trim()
             });
 
-            // Refresh DataGridView
-            dgvTransactions.DataSource = null;
-            dgvTransactions.DataSource = transactions;
-
             ClearInputs();
             UpdateSummary();
         }
@@ -289,11 +302,6 @@ namespace PersonalFinanceTracker
             if (dgvTransactions.CurrentRow?.DataBoundItem is Transaction t)
             {
                 transactions.Remove(t);
-
-                // Refresh DataGridView
-                dgvTransactions.DataSource = null;
-                dgvTransactions.DataSource = transactions;
-
                 UpdateSummary();
             }
             else
