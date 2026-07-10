@@ -267,7 +267,7 @@ namespace PersonalFinanceTracker
             cmbCategory.Items.Clear();
             cmbCategory.Items.AddRange(new string[]
             {
-                "Salary", "Freelance", "Food", "Transport", "Utilities", "Others"
+                "Salary", "Freelance", "Food", "Transport", "Utilities", "Other"
             });
             cmbCategory.SelectedIndex = 0;
         }
